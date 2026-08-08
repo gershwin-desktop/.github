@@ -1,0 +1,166 @@
+name: "🐛 Bug Report – Failing Test Required"
+description: "Report a reproducible bug as a failing UI test."
+title: "[Bug]: "
+labels:
+  - bug
+  - needs-triage
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bugs Are Failing Tests
+
+        Reproducible bugs must be reported as a **failing `.uitest` whenever reasonably possible**.
+
+        A good bug report gives us an executable demonstration of the problem:
+
+        ```text
+        Bug discovered
+             ↓
+        Write a .uitest reproducing it
+             ↓
+        Test fails 🔴
+             ↓
+        Fix the bug
+             ↓
+        Test passes 🟢
+             ↓
+        Keep the test as a regression test
+        ```
+
+        The test should fail against the current implementation and pass once the bug is fixed.
+
+        ### Requirements for a `.uitest`
+
+        The test should:
+
+        - Reproduce the bug deterministically.
+        - Be independent of other tests and their execution order.
+        - Use the smallest practical reproduction.
+        - Clean up after itself and leave the computer in the state in which it was found.
+        - Fail because of the reported bug, not because of unrelated environmental conditions.
+        - Pass once the bug is fixed.
+
+        If the bug genuinely cannot be expressed as a `.uitest`, provide a detailed manual reproduction instead.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Bug Summary
+      description: What is wrong, and what behavior did you expect?
+      placeholder: |
+        Example: Console's "Copy" menu item is enabled when no text is selected.
+    validations:
+      required: true
+
+  - type: textarea
+    id: failing-uitest
+    attributes:
+      label: Failing .uitest
+      description: |
+        Provide the smallest `.uitest` that reproduces the bug.
+
+        Include the file path if the test already exists in the repository.
+        The test should fail against the current code and pass once the bug is fixed.
+      placeholder: |
+        ```text
+        # Console/Tests/copy-without-selection.uitest
+
+        # Reproduction of the bug:
+        launch application "Console"
+        wait until window "Console" timeout 15s
+        assert window "Console"
+
+        # This currently fails:
+        assert menu item "Edit/Copy" disabled
+
+        press "Cmd+Q"
+        wait until not exists window "Console" timeout 2s
+        log "Copy is disabled when nothing is selected"
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: test-result
+    attributes:
+      label: Failing Test Result
+      description: |
+        Show the command used to run the test and the relevant failure output.
+      placeholder: |
+        Run:
+          run_uitest Console/Tests/copy-without-selection.uitest
+
+        Result:
+          FAIL: expected menu item "Edit/Copy" to be disabled
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Manual Reproduction
+      description: |
+        Only required when the bug cannot reasonably be reproduced as a `.uitest`.
+
+        Provide exact steps, inputs, application state, and expected/actual results.
+      placeholder: |
+        1. Launch Console.
+        2. Open ...
+        3. ...
+        4. Observe ...
+
+        Expected:
+        ...
+
+        Actual:
+        ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected-vs-actual
+    attributes:
+      label: Expected vs. Actual Behavior
+      description: Clearly describe what should happen and what currently happens.
+      value: |
+        **Expected:**
+
+        **Actual:**
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS version, application version, commit SHA, hardware, or other relevant context.
+      placeholder: "e.g. macOS 15.6, commit a1b2c3d"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: policy-check
+    attributes:
+      label: Bug Report Policy
+      description: Please confirm that you have followed the project's bug reporting policy.
+      options:
+        - label: "I have provided a failing `.uitest`, or I have explained why this bug cannot reasonably be expressed as a `.uitest` and provided a detailed manual reproduction."
+          required: true
+        - label: "My `.uitest` is deterministic, independent of test order, and cleans up after itself."
+          required: false
+        - label: "I understand that a reproducible bug should be expressed as a failing `.uitest` whenever reasonably possible."
+          required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Logs, screenshots, stack traces, videos, or other useful information.
+      placeholder: |
+        Add any additional context here.
+    validations:
+      required: false
