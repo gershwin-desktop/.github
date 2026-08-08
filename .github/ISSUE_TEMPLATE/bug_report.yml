@@ -1,4 +1,4 @@
-name: "🐛 Bug Report – Failing Test Required"
+name: "Bug Report with failing UI test"
 description: "Report a reproducible bug as a failing UI test."
 title: "[Bug]: "
 labels:
@@ -65,7 +65,6 @@ body:
         Include the file path if the test already exists in the repository.
         The test should fail against the current code and pass once the bug is fixed.
       placeholder: |
-        ```text
         # Console/Tests/copy-without-selection.uitest
 
         # Reproduction of the bug:
@@ -79,7 +78,7 @@ body:
         press "Cmd+Q"
         wait until not exists window "Console" timeout 2s
         log "Copy is disabled when nothing is selected"
-        ```
+
     validations:
       required: false
 
@@ -138,22 +137,9 @@ body:
     attributes:
       label: Environment
       description: OS version, application version, commit SHA, hardware, or other relevant context.
-      placeholder: "e.g. macOS 15.6, commit a1b2c3d"
+      placeholder: "e.g., gershwin-on-nextbsd-rc-20260727222301-x86_64.iso"
     validations:
       required: false
-
-  - type: checkboxes
-    id: policy-check
-    attributes:
-      label: Bug Report Policy
-      description: Please confirm that you have followed the project's bug reporting policy.
-      options:
-        - label: "I have provided a failing `.uitest`, or I have explained why this bug cannot reasonably be expressed as a `.uitest` and provided a detailed manual reproduction."
-          required: true
-        - label: "My `.uitest` is deterministic, independent of test order, and cleans up after itself."
-          required: false
-        - label: "I understand that a reproducible bug should be expressed as a failing `.uitest` whenever reasonably possible."
-          required: true
 
   - type: textarea
     id: additional-context
